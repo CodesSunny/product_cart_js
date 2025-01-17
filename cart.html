@@ -64,9 +64,13 @@
             </div>
             <div class="coupon">
                 <input type="text" placeholder="Enter Coupon Code" class="coupon-input">
-                <button class="apply-coupon-btn">Apply</button>
+                <span class="coupon-code">active : <i> sunny </i><b>03</b></span>
+                <button onclick="applyCoupon()" class="apply-coupon-btn">Apply</button>
             </div>
             <p>Net Price: <span id="net-price">$610</span></p>
+            <div class="buy-section">
+                <button onclick="buyItems()" class="buy-btn">Buy </button>
+            </div>
         </div>
     </div>
     <script src="index.js"></script>

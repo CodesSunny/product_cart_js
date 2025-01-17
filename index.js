@@ -1,5 +1,4 @@
 let cartItems = document.querySelector(".cart-items");
-// let finalCartPrice = document.querySelector("#final-price").textContent;
 
 function hideCart(){
     let cart = document.querySelector(".cart");
@@ -43,7 +42,7 @@ function addToCart(productTitle,productPrice){
     }
 
 
-    function getTotalPrice(){
+function getTotalPrice(){
         //nodelist of product price
         let cartItemPrice = cartItems.querySelectorAll(".cart-item-price");  
 
@@ -58,11 +57,12 @@ function addToCart(productTitle,productPrice){
             totalCartPrice.textContent = sum; 
             totalCartPrice.textContent = "$" + totalCartPrice.textContent;            
         }       
+        getFinalPrice(sum );
     }
 
 
     // increase quantity
-    function increaseCount(button){
+function increaseCount(button){
         let quantityElement = button.previousElementSibling;
         let quantity = parseInt(quantityElement.textContent);    
         let priceElement = button.parentElement.previousElementSibling;
@@ -91,7 +91,7 @@ function addToCart(productTitle,productPrice){
 
 
     // decrease quantity
-    function decreaseCount(button){
+function decreaseCount(button){
         let quantityElement = button.nextElementSibling;    
         let quantity = parseInt(quantityElement.textContent);
         let priceElement = button.parentElement.previousElementSibling;
@@ -110,6 +110,56 @@ function addToCart(productTitle,productPrice){
             alert("can't be zero");
         }
         }
+
+        // final price calculation
+function getFinalPrice(sumTotalPrice){
+            const deliveryCharge = document.getElementById('delivery-charge');
+            const deliveryChargeValue = Number(deliveryCharge.textContent.split('$')[1]);           
+            const finalPrice = document.getElementById('final-price');
+            let finalPriceValue = 0;
+            finalPriceValue = sumTotalPrice + deliveryChargeValue;
+            finalPrice.textContent = '$' + finalPriceValue;
+            getNetPrice(finalPriceValue);
+        }
+
+        // net price calculation
+function getNetPrice(finalPriceValue){
+        const netPrice = document.getElementById('net-price');      
+        if(coupon){
+
+            // if coupon code matched apply 10% discount
+            const discountedPrice = finalPriceValue*0.9;
+            
+            netPrice.textContent = '$' + discountedPrice.toFixed(2);
+        }else{
+            netPrice.textContent = '$' + finalPriceValue.toFixed(2);
+        }       
+        buyItems(Number(netPrice.textContent.split('$')[1]));
+    } 
+
+    // read coupon code
+    let coupon = false;
+function applyCoupon(){
+        const couponInput = document.querySelector('.coupon-input');
+        const {value} = couponInput;
+        const couponCode = document.querySelector('.coupon-code').textContent.split(':')[1];
+        // validate coupon code
+        if(value.replaceAll(" ","") === couponCode.replaceAll(" ","")){          
+            coupon = true;
+            alert('congrats');
+            getNetPrice();
+        }else{
+            coupon = false;
+            alert('retry'); 
+        } 
+
+        // Update net price based on coupon status
+        const finalPriceValue = Number(document.getElementById('final-price').textContent.split('$')[1]);
+        getNetPrice(finalPriceValue); 
+    } 
+
+function buyItems(payableAmount){
+    console.log(payableAmount);
     
-    
-    
+
+}
